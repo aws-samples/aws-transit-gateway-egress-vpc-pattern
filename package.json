@@ -1,0 +1,24 @@
+{
+  "name": "egress_vpc-tg-demo",
+  "version": "1.0.0",
+  "bin": {
+    "egress_vpc-tg-demo": "bin/egress_vpc-tg-demo.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/node": "8.10.45",
+    "aws-cdk": "^1.11.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-ec2": "^1.11.0",
+    "@aws-cdk/aws-iam": "^1.11.0",
+    "@aws-cdk/core": "^1.11.0",
+    "source-map-support": "^0.5.13"
+  }
+}

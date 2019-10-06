@@ -1,0 +1,3 @@
+{
+  "app": "npx ts-node bin/egress_vpc-tg-demo.ts"
+}
