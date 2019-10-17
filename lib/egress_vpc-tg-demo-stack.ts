@@ -9,7 +9,7 @@ export class EgressVpcTgDemoStack extends cdk.Stack {
     //set-up egress and private VPCs
     const egressVPC = new ec2.Vpc(this, 'Egress VPC', {
       cidr: "10.0.1.0/26",
-      natGateways: 1,
+      //natGateways: 1, add this to limit numer of deployed NAT gateways
       subnetConfiguration: [{
           cidrMask: 28,
           name: 'Public - EgressVPC SubNet',
