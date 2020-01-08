@@ -1,10 +1,12 @@
 # Transit Gateway Demo Stack: Egress-VPC Design Pattern
-> This CDK project demonstrates a shared egress-VPC design pattern where one or multiple isolated VPCs can share / use a dedicated egress VPC with shared NAT gateways. Furthermore, the stack uses AWS Systems Manager Session Manager and AWS PrivateLink to securely manage a demo EC2 instance in a private VPC / subnet.
+
+> This CDK project demonstrates a shared egress-VPC design pattern where one or multiple isolated VPCs can share / use a dedicated egress VPC with shared NAT gateways. Furthermore, the stack uses AWS Systems Manager Session Manager to securely access a demo EC2 instance in a private VPC / subnet.
 
 ## Solution Overview
-This architecture shows you the egress VPC pattern and elements that will be created by the template. The private VPC is created with a single EC2 instance. It lacks a direct route to the internet and has no public subnets or internet gateway. Instead, traffic destined for the internet is routed to the Transit Gateway. VPC endpoints will be created as needed for connectivity to AWS Systems Manager.
 
-The second VPC contains two pairs of public and private subnets, an internet gateway and two NAT gateways. Both VPCs are attached to the Transit Gateway, which allows east west connectivity. All relevant routes are depicted in tables connected by dotted lines. 
+This architecture shows you the egress VPC pattern and elements that will be created by the template. The private VPC is created with a single EC2 instance. It lacks a direct route to the internet and has no public subnets or internet gateway. Instead, traffic destined for the internet is routed to the Transit Gateway.
+
+The second VPC contains two pairs of public and private subnets, an internet gateway and two NAT gateways. Both VPCs are attached to the Transit Gateway, which allows east west connectivity. All relevant routes are depicted in tables connected by dotted lines.
 
 ![Diagram](img/egressVPC_TG_CDK.png)
 
@@ -16,7 +18,7 @@ This will include:
 - Installing CDK and closing this [demo repository](https://github.com/aws-samples/aws-transit-gateway-egress-vpc-pattern)
 - Deploying the example environment into your AWS account
 - Familiarizing yourself with the egress VPC pattern and the associated constructs and routing
-- Securely accessing the shell of a fully private EC2 instance via [AWS PrivateLInk](https://aws.amazon.com/privatelink/) and [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
+- Securely accessing the shell of a fully private EC2 instance via [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
 
 ### Prerequisites
 - An [AWS account](https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fportal.aws.amazon.com%2Fbilling%2Fsignup%2Fresume&client_id=signup)
@@ -44,11 +46,11 @@ This will include:
 ![AWS Systems Manager Session Manager](img/AWS_Systems_Manager_Session_Manager.png)
 ## Good to know and explore
 
-- The CDK template follows the VPC Endpoints for Systems Manager [documentation](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-create-vpc.html) and implements mandatory, as well as optional endpoints. You can inspect the created endpoints in the AWS Console under VPC - Endpoints.
-
-- All interface endpoints only accept inbound connections on port 443 originating from the demo instance security group. The AWS Systems Manager Agent (SSM Agent) establishing the outbound connections comes automatically pre-installed on [select](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html) AMIs incl. Amazon Linux, Ubuntu and Windows Server and is authorized to via a role created by the stack.
-
 - The image to create the EC2 instance is selected based on a higher level constructor [AmazonLinuxImage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.AmazonLinuxImage.html) and the AMI ID is automatically retrieved via the SSM parameter store. This means that the stack can be deployed to multiple regions and will automatically retrieve the latest managed image of the selected OS. By default CDK will use your default AWS cli configuration, however multiple environments can easily be [integrated](https://docs.aws.amazon.com/cdk/latest/guide/environments.html) via CDK native functionality.
+
+- AWS Systems Manager Agent (SSM Agent) is included in the utilized AMI and requires two managed policies to work, which are attached to the instance’s role.
+
+- The CDK template includes commented out examples of adding [VPC Endpoint for Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-create-vpc.html) and illustrates the use of mandatory, as well as optional endpoints.
 
 ## Useful CDK commands
  * `npm run build`   compile typescript to js

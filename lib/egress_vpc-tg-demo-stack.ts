@@ -40,39 +40,42 @@ export class EgressVpcTgDemoStack extends cdk.Stack {
       description: 'Demo EC2 Instance Security Group',
       allowAllOutbound: true,
     });
-    //adding interface endpoints for Systems Manger use - only 443 from EC2-SG to Interface Endpoints necessary
-    const ssmIE = privateVPC.addInterfaceEndpoint('SSM', {
-      service: ec2.InterfaceVpcEndpointAwsService.SSM,
-      privateDnsEnabled: true,
-      subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
-    });
-    ssmIE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from SSM IE Private SG');
 
-    const ssmMessagesIE = privateVPC.addInterfaceEndpoint('SSM-Messages', {
-      service: ec2.InterfaceVpcEndpointAwsService.SSM_MESSAGES,
-      privateDnsEnabled: true,
-      subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
-    });
-    ssmMessagesIE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from SSM Messages IE Private SG');
+    // uncomment below lines to add private link endpoints for Systems Manager
+    
+    // adding interface endpoints for Systems Manger use - only 443 from EC2-SG to Interface Endpoints necessary
+    // const ssmIE = privateVPC.addInterfaceEndpoint('SSM', {
+    //   service: ec2.InterfaceVpcEndpointAwsService.SSM,
+    //   privateDnsEnabled: true,
+    //   subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
+    // });
+    // ssmIE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from SSM IE Private SG');
 
-    const ec2IE = privateVPC.addInterfaceEndpoint('EC2', {
-      service: ec2.InterfaceVpcEndpointAwsService.EC2,
-      privateDnsEnabled: true,
-      subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
-    });
-    ec2IE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from EC2 IE Private SG');
+    // const ssmMessagesIE = privateVPC.addInterfaceEndpoint('SSM-Messages', {
+    //   service: ec2.InterfaceVpcEndpointAwsService.SSM_MESSAGES,
+    //   privateDnsEnabled: true,
+    //   subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
+    // });
+    // ssmMessagesIE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from SSM Messages IE Private SG');
 
-    const ec2Messages = privateVPC.addInterfaceEndpoint('EC2-messages', {
-      service: ec2.InterfaceVpcEndpointAwsService.EC2_MESSAGES,
-      privateDnsEnabled: true,
-      subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
-    });
-    ec2Messages.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from EC2 Messages IE Private SG');
+    // const ec2IE = privateVPC.addInterfaceEndpoint('EC2', {
+    //   service: ec2.InterfaceVpcEndpointAwsService.EC2,
+    //   privateDnsEnabled: true,
+    //   subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
+    // });
+    // ec2IE.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from EC2 IE Private SG');
 
-    privateVPC.addGatewayEndpoint('S3-SSM', {
-      service: ec2.GatewayVpcEndpointAwsService.S3,
-      subnets: [{ subnetType: ec2.SubnetType.ISOLATED, onePerAz: true }],
-    });
+    // const ec2Messages = privateVPC.addInterfaceEndpoint('EC2-messages', {
+    //   service: ec2.InterfaceVpcEndpointAwsService.EC2_MESSAGES,
+    //   privateDnsEnabled: true,
+    //   subnets: { subnetType: ec2.SubnetType.ISOLATED, onePerAz: true },
+    // });
+    // ec2Messages.connections.allowFrom(ssmPrivateSG, ec2.Port.tcp(443), 'Allow from EC2 Messages IE Private SG');
+
+    // privateVPC.addGatewayEndpoint('S3-SSM', {
+    //   service: ec2.GatewayVpcEndpointAwsService.S3,
+    //   subnets: [{ subnetType: ec2.SubnetType.ISOLATED, onePerAz: true }],
+    // });
 
     //Create TG gateway
     const TransitGateway = new ec2.CfnTransitGateway(this, 'Transit_Gateway', {
@@ -171,7 +174,7 @@ export class EgressVpcTgDemoStack extends cdk.Stack {
         ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
         ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy'),
       ],
-      // inline policy for S3 SSM
+      // optional inline policy for S3 SSM
       inlinePolicies: {
         ssmS3policy: new PolicyDocument({
           statements: [
