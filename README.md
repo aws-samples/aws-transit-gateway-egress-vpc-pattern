@@ -12,15 +12,17 @@ The second VPC contains two pairs of public and private subnets, an internet gat
 
 ## Walkthrough
 
-In this section you will familiarize yourself with using [AWS Cloud Development Kit](https://docs.aws.amazon.com/cdk/latest/guide/home.html) (CDK) by downloading and deploying an egress VPC demo into your AWS account. 
+In this section you will familiarize yourself with using [AWS Cloud Development Kit](https://docs.aws.amazon.com/cdk/latest/guide/home.html) (CDK) by downloading and deploying an egress VPC demo into your AWS account.
 
 This will include:
+
 - Installing CDK and closing this [demo repository](https://github.com/aws-samples/aws-transit-gateway-egress-vpc-pattern)
 - Deploying the example environment into your AWS account
 - Familiarizing yourself with the egress VPC pattern and the associated constructs and routing
 - Securely accessing the shell of a fully private EC2 instance via [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
 
 ### Prerequisites
+
 - An [AWS account](https://signin.aws.amazon.com/signin?redirect_uri=https%3A%2F%2Fportal.aws.amazon.com%2Fbilling%2Fsignup%2Fresume&client_id=signup)
 - Installed and authenticated [AWS CLI](https://docs.aws.amazon.com/en_pv/cli/latest/userguide/cli-chap-install.html) (authenticate with an [IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started.html) user or an [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/Welcome.html) Security Token)
 - AWS [CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) installed (typically via `npm install aws-cdk -g`)
@@ -44,6 +46,7 @@ This will include:
 
 8. Execute any command to test internet connectivity, for instance a nice and simple `ping amazon.com`
 ![AWS Systems Manager Session Manager](img/AWS_Systems_Manager_Session_Manager.png)
+
 ## Good to know and explore
 
 - The image to create the EC2 instance is selected based on a higher level constructor [AmazonLinuxImage](https://docs.aws.amazon.com/cdk/api/latest/docs/@aws-cdk_aws-ec2.AmazonLinuxImage.html) and the AMI ID is automatically retrieved via the SSM parameter store. This means that the stack can be deployed to multiple regions and will automatically retrieve the latest managed image of the selected OS. By default CDK will use your default AWS cli configuration, however multiple environments can easily be [integrated](https://docs.aws.amazon.com/cdk/latest/guide/environments.html) via CDK native functionality.
@@ -53,16 +56,17 @@ This will include:
 - The CDK template includes commented out examples of adding [VPC Endpoint for Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-create-vpc.html) and illustrates the use of mandatory, as well as optional endpoints.
 
 ## Useful CDK commands
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+
+- `npm run build`   compile typescript to js
+- `npm run watch`   watch for changes and compile
+- `cdk deploy`      deploy this stack to your default AWS account/region
+- `cdk diff`        compare deployed stack with current state
+- `cdk synth`       emits the synthesized CloudFormation template
 
 ## Cleaning up
+
 To avoid incurring future charges, delete the resources by simply running `cdk destroy` and confirm deletion.
 
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
-
