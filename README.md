@@ -1,12 +1,12 @@
 # Transit Gateway Demo Stack: Egress-VPC Design Pattern
 
-> This CDK project demonstrates a shared egress-VPC design pattern where one or multiple isolated VPCs can share / use a dedicated egress VPC with shared NAT gateways. Furthermore, the stack uses AWS Systems Manager Session Manager to securely access a demo EC2 instance in a private VPC / subnet.
+> This CDK project demonstrates a shared egress-VPC design pattern. Furthermore, the stack uses AWS Systems Manager Session Manager to securely access a demo EC2 instance in a private VPC / subnet.
 
 ## Solution Overview
 
-This architecture shows you the egress VPC pattern and elements that will be created by the template. The private VPC is created with a single EC2 instance. It lacks a direct route to the internet and has no public subnets or internet gateway. Instead, traffic destined for the internet is routed to the Transit Gateway.
+The architecture diagram that follows shows the egress VPC pattern and elements created by the template. The private VPC contains a single EC2 instance. It lacks a direct route to the internet and has no public subnets or internet gateway. Instead, traffic destined for the internet is routed to the Transit Gateway.
 
-The second VPC contains two pairs of public and private subnets, an internet gateway and two NAT gateways. Both VPCs are attached to the Transit Gateway, which allows east west connectivity. All relevant routes are depicted in tables connected by dotted lines.
+The second VPC contains two pairs of public and private subnets, an internet gateway and two NAT gateways. Both VPCs are attached to the Transit Gateway, which allows north-south connectivity. All relevant routes are depicted in tables connected by dotted lines.
 
 ![Diagram](img/egressVPC_TG_CDK.png)
 
